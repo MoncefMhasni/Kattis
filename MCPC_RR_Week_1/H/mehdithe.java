@@ -2,9 +2,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.Random;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -20,30 +18,30 @@ public class Main {
     OutputStream outputStream = System.out;
     InputReader in = new InputReader(inputStream);
     PrintWriter out = new PrintWriter(outputStream);
-    MinimumScalarProduct solver = new MinimumScalarProduct();
-    int testCount = Integer.parseInt(in.next());
-    for (int i = 1; i <= testCount; i++) {
-      solver.solve(i, in, out);
-    }
+    ProblemHGreedilyIncreasingSubsequence solver = new ProblemHGreedilyIncreasingSubsequence();
+    solver.solve(1, in, out);
     out.close();
   }
 
-  static class MinimumScalarProduct {
+  static class ProblemHGreedilyIncreasingSubsequence {
 
     public void solve(int testNumber, InputReader in, PrintWriter out) {
       int n = in.nextInt();
-      long[] a = in.nextLongArray(n);
-      long[] b = in.nextLongArray(n);
-      ArrayUtils.sort(a);
-      ArrayUtils.sort(b);
-      ArrayUtils.reverse(b);
-      long ans = 0;
+      int[] arr = in.nextIntArray(n);
+      int[] res = new int[n];
+      int pt = 0;
+      int best = 0;
       for (int i = 0; i < n; i++) {
-        ans += a[i] * b[i];
+        if (arr[i] > best) {
+          res[pt++] = arr[i];
+          best = arr[i];
+        }
       }
-      out.println("Case #" + testNumber + ": " + ans);
+      out.println(pt);
+      for (int i = 0; i < pt; i++) {
+        out.print(res[i] + " ");
+      }
     }
-
   }
 
   static class InputReader {
@@ -104,86 +102,17 @@ public class Main {
       throw new InputMismatchException();
     }
 
-    public long nextLong() {
-      int c;
-      for (c = this.read(); isSpaceChar(c); c = this.read()) {
-      }
-
-      byte sgn = 1;
-      if (c == 45) {
-        sgn = -1;
-        c = this.read();
-      }
-
-      long res = 0;
-
-      while (c >= 48 && c <= 57) {
-        res *= 10L;
-        res += c - 48;
-        c = this.read();
-        if (isSpaceChar(c)) {
-          return res * sgn;
-        }
-      }
-      throw new InputMismatchException();
-    }
-
-    public String next() {
-      int c;
-      while (isSpaceChar(c = this.read())) {
-      }
-
-      StringBuilder result = new StringBuilder();
-      result.appendCodePoint(c);
-
-      while (!isSpaceChar(c = this.read())) {
-        result.appendCodePoint(c);
-      }
-
-      return result.toString();
-    }
-
     public static boolean isSpaceChar(int c) {
       return c == 32 || c == 10 || c == 13 || c == 9 || c == -1;
     }
 
-    public long[] nextLongArray(int n) {
-      long[] arr = new long[n];
+    public int[] nextIntArray(int n) {
+      int[] arr = new int[n];
       for (int i = 0; i < n; i++) {
-        arr[i] = nextLong();
+        arr[i] = nextInt();
       }
       return arr;
     }
 
   }
-
-  static class ArrayUtils {
-
-    public static void reverse(long[] arr) {
-      for (int i = 0; i < arr.length / 2; i++) {
-        long temp = arr[i];
-        arr[i] = arr[arr.length - i - 1];
-        arr[arr.length - i - 1] = temp;
-      }
-    }
-
-    public static void sort(long[] arr) {
-      int n = arr.length;
-      Random r = new Random();
-      for (int i = 0; i < n; i++) {
-        int p = r.nextInt(n + 1);
-        if (p < n) {
-          long temp = arr[i];
-          arr[i] = arr[p];
-          arr[p] = temp;
-        }
-      }
-      Arrays.sort(arr);
-    }
-
-  }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 25a47f838cf710652e93c804cab4a6d152a21add
